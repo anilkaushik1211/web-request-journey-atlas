@@ -11,41 +11,25 @@
 <style>
 /* Layout: a vertical "descent" through the stack. Sticky layer rail on the left tracks where the packet is; content column on the right. */
 :root{
-  --bg:#EDF0F3; --surface:#FFFFFF; --surface-2:#E3E8EE; --sunken:#F6F8FA;
-  --ink:#0F1923; --muted:#526070; --faint:#7B8796; --line:#D2D9E1; --line-strong:#B5C0CC;
-  --packet:#F2A007; --packet-ink:#3D2700; --focus:#1C64D6;
-  --ok:#1E8E4E; --warn:#B26A00; --bad:#C92A2A;
-  --p-client:#6741D9; --p-network:#0B7285; --p-edge:#1864AB; --p-platform:#A61E4D;
-  --p-service:#2B8A3E; --p-data:#9C5300; --p-return:#495A6E; --p-ops:#5F3DC4;
-  --code-bg:#F3F5F8; --code-ink:#1B2733; --k:#A61E4D; --s:#2B7A3E; --n:#9C5300; --c:#7B8796; --t:#1864AB; --a:#6741D9;
+  --bg:#0b1020; --surface:#111a2e; --surface-2:#18233b; --sunken:#0d1528;
+  --ink:#e7ecf5; --muted:#9aa7bd; --faint:#6b7891; --line:#1f2b45; --line-strong:#2d3c5c;
+  --packet:#fbbf24; --packet-ink:#271a00; --focus:#60a5fa; --glow:#22d3ee;
+  --ok:#34d399; --warn:#fbbf24; --bad:#f87171;
+  --p-client:#a78bfa; --p-network:#22d3ee; --p-edge:#60a5fa; --p-platform:#f472b6;
+  --p-service:#4ade80; --p-data:#fb923c; --p-return:#94a3b8; --p-ops:#c084fc;
+  --code-bg:#0a1224; --code-ink:#d6deeb; --k:#f472b6; --s:#86efac; --n:#fdba74; --c:#64748b; --t:#7dd3fc; --a:#c4b5fd;
   --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --body:"IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
-  --r:10px; --shadow:0 1px 2px rgba(15,25,35,.06),0 6px 24px -12px rgba(15,25,35,.18);
+  --r:10px; --shadow:0 1px 2px rgba(0,0,0,.35),0 14px 40px -18px rgba(0,0,0,.7);
+  color-scheme:dark;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0C1218; --surface:#131B24; --surface-2:#1B2531; --sunken:#0F161E;
-  --ink:#E4EAF0; --muted:#9AA8B8; --faint:#6E7C8C; --line:#253241; --line-strong:#344455;
-  --packet:#FFB82E; --packet-ink:#2A1A00; --focus:#5B9BFF;
-  --ok:#4CC27A; --warn:#F2A33A; --bad:#FF6B6B;
-  --p-client:#9C87F5; --p-network:#3BC4D6; --p-edge:#5EA6F2; --p-platform:#F06595;
-  --p-service:#5FCB78; --p-data:#E8A04A; --p-return:#9DB0C6; --p-ops:#B197FC;
-  --code-bg:#0F171F; --code-ink:#D6DEE7; --k:#F783AC; --s:#8CE99A; --n:#FFC078; --c:#6E7C8C; --t:#74C0FC; --a:#B197FC;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px -14px rgba(0,0,0,.6); color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0C1218; --surface:#131B24; --surface-2:#1B2531; --sunken:#0F161E;
-  --ink:#E4EAF0; --muted:#9AA8B8; --faint:#6E7C8C; --line:#253241; --line-strong:#344455;
-  --packet:#FFB82E; --packet-ink:#2A1A00; --focus:#5B9BFF;
-  --ok:#4CC27A; --warn:#F2A33A; --bad:#FF6B6B;
-  --p-client:#9C87F5; --p-network:#3BC4D6; --p-edge:#5EA6F2; --p-platform:#F06595;
-  --p-service:#5FCB78; --p-data:#E8A04A; --p-return:#9DB0C6; --p-ops:#B197FC;
-  --code-bg:#0F171F; --code-ink:#D6DEE7; --k:#F783AC; --s:#8CE99A; --n:#FFC078; --c:#6E7C8C; --t:#74C0FC; --a:#B197FC;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px -14px rgba(0,0,0,.6); color-scheme:dark}
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px)}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(1100px 620px at 8% -8%,rgba(99,102,241,.22),transparent 60%),radial-gradient(900px 520px at 100% 0%,rgba(34,211,238,.14),transparent 62%),radial-gradient(800px 600px at 50% 110%,rgba(244,114,182,.08),transparent 60%),var(--bg);background-attachment:fixed;color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:var(--focus)}
 :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
 code,kbd{font-family:var(--mono);font-size:.86em}
@@ -68,9 +52,10 @@ h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;line-height:1.12;margin
 .here-chip{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:999px;color:var(--pc);border:1px solid color-mix(in srgb,var(--pc) 45%,transparent);background:color-mix(in srgb,var(--pc) 10%,transparent);white-space:nowrap}
 .progress{position:absolute;left:0;bottom:-1px;height:2px;background:var(--packet);width:0;transition:width .15s linear}
 .top-actions{display:flex;gap:8px}
-.btn{font:600 14px/1 var(--body);border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);padding:9px 14px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
-.btn:hover{border-color:var(--ink)}
-.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn{font:600 14px/1 var(--body);border:1px solid var(--line-strong);background:var(--surface-2);transition:transform .15s,border-color .15s;color:var(--ink);padding:9px 14px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.btn:hover{border-color:var(--glow);transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:default;transform:none}
+.btn.primary{background:var(--packet);color:var(--packet-ink);border-color:var(--packet);box-shadow:0 8px 24px -10px rgba(251,191,36,.7)}
 .btn.primary:hover{opacity:.9}
 .btn.small{padding:6px 10px;font-size:13px}
 .btn[aria-pressed="true"]{background:var(--surface-2);border-color:var(--ink)}
@@ -91,6 +76,7 @@ h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;line-height:1.12;margin
 .how{margin-top:24px;display:grid;gap:10px;max-width:60ch}
 .how li{list-style:none;display:flex;gap:10px;align-items:baseline;font-size:15px}
 .how{padding:0}
+.how .chip{flex:none;overflow:visible}
 .how kbd{border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:5px;padding:1px 6px;background:var(--surface)}
 
 /* latency bar */
@@ -184,10 +170,11 @@ input[type="range"]{padding:0;accent-color:var(--packet)}
 
 /* ---------- layer card ---------- */
 .layer{background:var(--surface);border:1px solid var(--line);border-radius:16px;margin:22px 0;scroll-margin-top:84px;position:relative;overflow:hidden;transition:box-shadow .3s,border-color .3s}
-.layer.current{border-color:color-mix(in srgb,var(--pc) 55%,var(--line));box-shadow:var(--shadow)}
+.layer.current{border-color:color-mix(in srgb,var(--pc) 60%,var(--line));box-shadow:0 0 0 1px color-mix(in srgb,var(--pc) 35%,transparent),0 30px 80px -40px var(--pc)}
+.layer::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--pc),transparent 70%);opacity:.8}
 .layer-top{padding:22px 24px 0}
 .layer-meta{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
-.layer-num{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--bg);background:var(--pc);padding:3px 8px;border-radius:6px;font-variant-numeric:tabular-nums}
+.layer-num{font-family:var(--mono);font-size:12px;font-weight:600;color:#0b1020;background:var(--pc);padding:3px 8px;border-radius:6px;font-variant-numeric:tabular-nums}
 .chip{font-family:var(--mono);font-size:11.5px;padding:2px 8px;border-radius:999px;border:1px solid var(--line-strong);color:var(--muted);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .layer-meta .chip{white-space:normal}
 .chip.pc{color:var(--pc);border-color:color-mix(in srgb,var(--pc) 45%,transparent)}
@@ -307,6 +294,145 @@ p code,li code,.term,.qa summary{overflow-wrap:anywhere}
 .gloss a{font-size:12px;margin-left:6px}
 .gloss-filter{margin-bottom:12px;max-width:340px;width:100%}
 footer{padding-block:30px 60px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+
+/* ---------- nav ---------- */
+.topnav{display:flex;gap:4px}
+.topnav a{color:var(--muted);text-decoration:none;font-size:14px;padding:6px 10px;border-radius:8px}
+.topnav a:hover{color:var(--ink);background:var(--surface-2)}
+@media (max-width:1240px){.topnav{display:none}}
+
+/* ---------- story ---------- */
+.hero-top{max-width:920px}
+.hero-top .lede{max-width:70ch}
+.story{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:18px;margin-top:28px;align-items:stretch}
+@media (max-width:1020px){.story{grid-template-columns:minmax(0,1fr)}}
+.stage{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line-strong);background:linear-gradient(180deg,#0d1838 0%,#0b1020 85%);aspect-ratio:860/480;box-shadow:0 30px 80px -40px rgba(34,211,238,.45)}
+.stage:focus-visible{outline:2px solid var(--glow)}
+#world{display:block;width:100%;height:100%}
+.stage-start{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:12px;font:700 18px var(--body);color:var(--packet-ink);background:var(--packet);border:0;border-radius:999px;padding:16px 26px;cursor:pointer;box-shadow:0 0 0 0 rgba(251,191,36,.6);animation:beacon 1.8s ease-out infinite}
+.stage-start span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--packet-ink);color:var(--packet);font-size:13px}
+@keyframes beacon{0%{box-shadow:0 0 0 0 rgba(251,191,36,.55)}100%{box-shadow:0 0 0 26px rgba(251,191,36,0)}}
+.caption{background:linear-gradient(180deg,var(--surface),var(--sunken));border:1px solid var(--line);border-radius:20px;padding:20px 22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.cap-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center}
+.caption h2{font-size:clamp(22px,2.3vw,30px);font-weight:800;letter-spacing:-.02em}
+.caption p{font-size:17px;line-height:1.65;margin:0;min-height:7.5em}
+.cap-tech{font-size:14px;color:var(--muted)}
+.cap-tech a{color:var(--glow);font-weight:600;text-decoration:none;border-bottom:1px dashed var(--glow)}
+.story-ctrl{display:flex;gap:8px;align-items:center;margin-top:auto}
+.story-ctrl .btn.primary{flex:1;justify-content:center;padding:11px 16px;font-size:15px}
+.dots{display:flex;flex-wrap:wrap;gap:7px}
+.dots button{width:13px;height:13px;border-radius:50%;border:0;padding:0;background:var(--line-strong);cursor:pointer;transition:transform .2s}
+.dots button:hover{transform:scale(1.3)}
+.dots button.past{background:var(--p-network)}
+.dots button.on{background:var(--packet);box-shadow:0 0 0 4px rgba(251,191,36,.25)}
+.dots button.bad.on{background:var(--bad);box-shadow:0 0 0 4px rgba(248,113,113,.3)}
+.toggle{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);cursor:pointer}
+.toggle input{accent-color:var(--bad);width:16px;height:16px}
+
+/* svg world */
+#world text{font-family:var(--body)}
+#world .ground{fill:#0e1730}
+#world .ground-line{stroke:#23345a;stroke-width:2}
+#world .room{fill:#121c38;stroke:#24345c}
+#world .sign rect{fill:#0f1930;stroke:#2d3c5c;stroke-width:1.5;transition:stroke .3s,fill .3s}
+#world .sign text{font-size:15px;font-weight:600;fill:#cbd5e1}
+#world .sign.hot rect{stroke:var(--packet);fill:#2a2108}
+#world .sign.hot text{fill:#fde68a}
+#world .scr-t{font-size:10px;font-weight:600}
+#world .scr-big{font-size:14px;font-weight:700}
+#world .w-t{font-size:15px;font-weight:600;fill:#e2e8f0}
+#world .w-h{font-family:var(--display);font-size:24px;font-weight:800;fill:#e2e8f0}
+#world .w-s{font-size:12.5px;font-weight:600;fill:#94a3b8}
+#world .w-stop{font-size:11px;font-weight:800;fill:#fff}
+#world .mono{font-family:var(--mono)}
+#world .pk-t{font-size:8px;font-weight:800;fill:#fff;font-family:var(--mono)}
+#world .cable{stroke:#33456b;stroke-width:5;fill:none;stroke-linecap:round}
+#world .cable.dashy{stroke-dasharray:3 10;stroke-width:4}
+#world .sig{stroke:#22d3ee;stroke-width:5;fill:none;stroke-linecap:round;stroke-dasharray:10 16;opacity:0;transition:opacity .3s}
+#world.st-wire #wire-sig,#world.st-towersig #tower-sig,#world.st-net #net-sig{opacity:1;animation:flow .6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-52}}
+#world .cloud-wall{fill:rgba(56,189,248,.045);stroke:rgba(56,189,248,.35);stroke-width:2;stroke-dasharray:8 8}
+#world .led{fill:#14532d}
+#world.st-router .led{fill:#4ade80;animation:blink .5s steps(2) infinite}
+#world.st-router .l2{animation-delay:.15s}#world.st-router .l3{animation-delay:.3s}
+@keyframes blink{50%{opacity:.25}}
+#world .wave{opacity:0}
+#world.st-tower .wave{animation:wave 1.3s ease-out infinite}
+#world.st-tower .w2{animation-delay:.25s}#world.st-tower .w3{animation-delay:.5s}
+@keyframes wave{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+#world #dns-ans{opacity:0;transition:opacity .5s}
+#world.st-dns #dns-ans{opacity:1}
+#world.st-dns #dns-board rect{stroke:#fbbf24}
+#world #big-lock{opacity:.35;transition:opacity .4s}
+#world #big-shackle{transform:translateY(-12px);transition:transform .5s cubic-bezier(.4,1.6,.5,1) .2s}
+#world.st-lock #big-lock{opacity:1}
+#world.st-lock #big-shackle{transform:none}
+#world .win{fill:#1e293b;transition:fill .5s}
+#world.st-cdn .win{fill:#fde68a}
+#world #waf-gate{transform-box:fill-box;transform-origin:100% 50%;transition:transform 1s cubic-bezier(.5,0,.3,1.3)}
+#world.st-gate #waf-gate{transform:rotate(80deg)}
+#world #waf-glass{transition:transform 1.1s ease-in-out}
+#world.st-scan #waf-glass{transform:translate(-118px,58px)}
+#world .arm{transform-box:fill-box;transform-origin:50% 6%;transition:transform .6s cubic-bezier(.4,1.5,.5,1)}
+#world.st-stop #waf-arm{transform:rotate(115deg)}
+#world.st-lb #lb-arm{transform:rotate(-95deg)}
+#world #stop-sign{opacity:0;transition:opacity .3s}
+#world.st-stop #stop-sign{opacity:1;animation:shake .4s 3}
+@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+#world .lane{stroke:#33456b;transition:stroke .4s}
+#world.st-lb #lane-b{stroke:#fbbf24}
+#world.st-gwstamp #gw-stamp{animation:stamp .9s ease 1}
+@keyframes stamp{0%{transform:none}35%{transform:translateY(46px)}65%{transform:translateY(46px)}100%{transform:none}}
+#world #cb-light{fill:#14532d;transition:fill .4s}
+#world .cb-glow{fill:#4ade80;opacity:0;transition:opacity .4s}
+#world.st-cb #cb-light{fill:#4ade80}
+#world.st-cb .cb-glow{opacity:.25}
+#world .ck{opacity:0;transition:opacity .4s}
+#world.st-service .ck{opacity:1;fill:#86efac}
+#world.st-service .c2{transition-delay:.6s}#world.st-service .c3{transition-delay:1.2s}
+#world.st-redis #bolt{animation:flash .45s 3}
+@keyframes flash{50%{opacity:.15}}
+#world #vault-wheel{transform-box:fill-box;transform-origin:50% 50%}
+#world.st-vault #vault-wheel{animation:spin 1.4s ease-in-out 1}
+@keyframes spin{to{transform:rotate(360deg)}}
+#world .vault-glow{fill:#22d3ee;opacity:0;transition:opacity .5s}
+#world.st-vault .vault-glow{opacity:.12}
+#world .fan{opacity:0;transition:transform .9s cubic-bezier(.3,1.4,.5,1),opacity .4s}
+#world.st-kafka .fan{opacity:1;transform:translate(var(--tx),var(--ty))}
+#world .mw{opacity:0}
+#world.st-kafka .mw{animation:wave 1.1s ease-out infinite}
+#world.st-kafka .w2{animation-delay:.3s}
+#world #pk{opacity:0;transition:opacity .4s}
+#world.st-pk #pk{opacity:1}
+#world.st-arrived #pk,#world.st-done #cursor,#world.st-blocked #cursor{opacity:0}
+#world #cursor{transition:transform .8s cubic-bezier(.5,0,.3,1),opacity .4s}
+#world #pk .env{fill:#fef3c7;stroke:#f59e0b;stroke-width:2;transition:fill .5s,stroke .5s}
+#world #pk .flap{stroke:#d97706;stroke-width:2}
+#world.st-ret #pk .env{fill:#bbf7d0;stroke:#16a34a}
+#world.st-bad #pk .env{fill:#fecaca;stroke:#dc2626}
+#world .pk-glow{fill:#fbbf24;opacity:.18;animation:pulse 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 50%}
+#world.st-ret .pk-glow{fill:#4ade80}#world.st-bad .pk-glow{fill:#f87171}
+@keyframes pulse{50%{transform:scale(1.25);opacity:.06}}
+#world .stk{opacity:0;transform:scale(.2);transform-box:fill-box;transform-origin:50% 50%;transition:opacity .3s,transform .5s cubic-bezier(.3,1.7,.5,1)}
+#world.st-token #pk-token,#world.st-trk #pk-stamp,#world.st-lock #pk-lock,#world.st-okstamp #pk-ok,#world.st-bad #pk-x{opacity:1;transform:none}
+#world #cursor{transition:transform .8s cubic-bezier(.5,0,.3,1)}
+#world.st-cursor #cursor{transform:translate(-36px,-24px)}
+#world #btn rect{fill:#fbbf24;transition:fill .2s}
+#world.st-clicked #btn rect{fill:#b45309}
+#world #screen-ok,#world #screen-bad{opacity:0;transition:opacity .6s}
+#world.st-done #screen-ok,#world.st-blocked #screen-bad{opacity:1}
+
+/* plain-words callout on each layer */
+.simple{display:flex;gap:14px;align-items:flex-start;margin-top:16px;padding:14px 16px;border-radius:14px;background:linear-gradient(90deg,color-mix(in srgb,var(--packet) 12%,transparent),transparent);border:1px solid color-mix(in srgb,var(--packet) 30%,transparent);font-size:16.5px;line-height:1.6}
+.simple b{flex:none;font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--packet);padding-top:4px}
+
+/* console */
+.console-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(20px,3vw,40px);align-items:start}
+@media (max-width:980px){.console-grid{grid-template-columns:minmax(0,1fr)}}
+#console{padding-block:40px 20px}
+#map{padding-block:20px}
+.hero-stats b{background:linear-gradient(90deg,var(--packet),#f472b6);-webkit-background-clip:text;background-clip:text;color:transparent}
+
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .hide{display:none!important}
 </style>
@@ -321,6 +447,7 @@ footer{padding-block:30px 60px;color:var(--muted);font-size:14px;border-top:1px 
       <span class="here-chip phase-c" id="hereChip">Start</span>
       <span class="here-name" id="hereName">The click</span>
     </div>
+    <nav class="topnav" aria-label="Sections"><a href="#story-sec">Story</a><a href="#console">Console</a><a href="#map">Map</a><a href="#layers">Layers</a><a href="#cheatsheet">Cheat sheet</a><a href="#glossary">Glossary</a></nav>
     <div class="top-actions">
       <button class="btn small hide-sm" id="prevBtn" title="Previous layer (k)">↑ Prev</button>
       <button class="btn small" id="nextBtn" title="Next layer (j)">Next ↓</button>
@@ -330,13 +457,41 @@ footer{padding-block:30px 60px;color:var(--muted);font-size:14px;border-top:1px 
 </header>
 
 <main id="top">
-  <section class="hero wrap">
-    <div class="hero-grid">
+  <section class="hero wrap" id="story-sec">
+    <div class="hero-top">
+      <div class="eyebrow">A visual story · Angular · Spring Boot · Microservices · AWS</div>
+      <h1>What really happens after you <span class="click">click</span> “Place order”</h1>
+      <p class="lede">Follow one tiny letter from your laptop, through cables, a security guard, a receptionist and a vault, and back again. No coding knowledge needed: press play and watch. Engineers can go deeper in the console and the 36 layer guides below.</p>
+    </div>
+    <div class="story">
+      <div class="stage" id="stage" tabindex="0" aria-label="Animated story. Use the arrow keys to move between stops.">
+        <svg id="world" role="img" aria-labelledby="worldT" preserveAspectRatio="xMidYMid slice"></svg>
+        <button class="stage-start" id="storyStart" type="button"><span aria-hidden="true">▶</span><b>Start the story</b></button>
+      </div>
+      <aside class="caption" aria-live="polite">
+        <div class="cap-top"><span class="eyebrow" id="storyNum">Stop 1 of 18</span>
+          <label class="toggle" for="storyMode"><input type="checkbox" id="storyMode"> Send a suspicious letter</label></div>
+        <h2 id="storyTitle">Meet your request</h2>
+        <p id="storySimple">Every time you press a button on a website, your computer writes a tiny letter called a request.</p>
+        <div class="cap-tech">Engineers call this <a id="storyTech" href="#layer-ui-event">an HTTP request</a></div>
+        <div class="story-ctrl">
+          <button class="btn small" id="storyPrev" type="button" aria-label="Previous stop">←</button>
+          <button class="btn primary" id="storyPlay" type="button">▶ Play</button>
+          <button class="btn small" id="storyNext" type="button" aria-label="Next stop">→</button>
+        </div>
+        <div class="dots" id="storyDots"></div>
+      </aside>
+    </div>
+    <div class="hero-stats" id="heroStats"></div>
+  </section>
+
+  <section class="wrap" id="console">
+    <div class="section-head">
+      <div><div class="eyebrow">For engineers</div><h2>The engineer's console</h2></div>
+      <p class="muted" style="margin:0;max-width:52ch">The same journey with real headers, timings and failure modes. Pick a scenario and watch which layer catches it.</p>
+    </div>
+    <div class="console-grid">
       <div>
-        <div class="eyebrow">Angular · Spring Boot · Microservices · AWS</div>
-        <h1>What really happens after you <span class="click">click</span> “Place order”</h1>
-        <p class="lede">One HTTP request leaves an Angular app, crosses the internet, passes a CDN, a firewall, a load balancer, a proxy and an API gateway, wakes up a Spring Boot service, touches Redis, PostgreSQL and Kafka, and comes back as a confirmation screen. This atlas follows it through every layer, with the why, the mechanics and the code.</p>
-        <div class="hero-stats" id="heroStats"></div>
         <div class="budget">
           <div class="eyebrow">Where the time goes · typical first request</div>
           <div class="budget-bar" id="budgetBar" role="img" aria-label="Latency by phase"></div>
@@ -348,7 +503,6 @@ footer{padding-block:30px 60px;color:var(--muted);font-size:14px;border-top:1px 
           <li><span class="chip">3</span><span>Use <kbd>j</kbd> / <kbd>k</kbd> to jump between layers, tick <b>I understand this layer</b> to track progress.</span></li>
         </ul>
       </div>
-
       <div class="sim" id="sim" aria-label="Request simulator">
         <div class="sim-head">
           <div>
@@ -383,7 +537,7 @@ footer{padding-block:30px 60px;color:var(--muted);font-size:14px;border-top:1px 
           <span>Elapsed <span class="clock" id="clock">0 ms</span></span>
           <span id="simWhere" class="muted">Packet is waiting in the browser</span>
         </div>
-      </div>
+      
     </div>
   </section>
 
@@ -2758,6 +2912,45 @@ pit:['Exposing all Actuator endpoints (env, heapdump) publicly.','Trusting the g
 qa:[['What is defence in depth?','<p>Layering independent controls so that one failure does not lead to a breach: WAF and validation and parameterised queries and least-privilege DB users.</p>'],['How does Angular protect against XSS by default?','<p>It treats all values as untrusted and sanitises or escapes them when binding to the DOM. Interpolation is escaped; <code>[innerHTML]</code> is sanitised. Bypassing requires explicit DomSanitizer calls.</p>']],
 terms:[['OWASP','Open Worldwide Application Security Project; publishes the Top 10 web risks.'],['Least privilege','Granting only the permissions needed for a task.'],['SSRF','Server-side request forgery: making a server fetch attacker-chosen URLs.']]
 });
+/* ================= PLAIN WORDS ================= */
+const SIMPLE = {
+  'ui-event': 'You press the button. The shop page notices the tap, greys the button out so you can\'t press it twice, and starts preparing your order.',
+  'routing': 'Like the signboards in a mall that send you to the right floor. They also stop you entering the checkout floor if you have not signed in yet.',
+  'state': 'A helper who keeps your shopping list in one place and knows exactly which form to fill in to send it to the shop.',
+  'http': 'A post-office counter inside the app: every letter gets your ID card and a tracking number stuck on before it goes out.',
+  'browser': 'Your browser first checks its own drawers in case it already has what you need. If not, it gets the letter ready to leave your computer.',
+  'browser-sec': 'The browser is a careful parent. Before letting a page send your letter to a different address, it asks that address: "Do you accept letters from this shop?"',
+  'dns': 'Computers find each other by number, not by name. DNS is the internet\'s phonebook that turns "api.example.com" into a number like 13.35.7.21.',
+  'tcp': 'Before talking, both sides say "Hello?", "Hello, I can hear you", "Great, let\'s talk". Then every piece is numbered so nothing gets lost or jumbled.',
+  'tls': 'A secret handshake that gives both sides a private key. After it, your letter travels in a locked box only the shop can open, and the shop has proved it is the real shop.',
+  'http-proto': 'The agreed language and envelope format for the letter. Newer versions let many letters share one road at the same time instead of queuing.',
+  'cdn': 'A local branch of the shop in your city. It keeps copies of pages and pictures near you, and passes your order on to head office over a fast private road.',
+  'waf': 'A security guard at the gate who checks every letter for known tricks and stops anyone knocking thousands of times a minute.',
+  'lb': 'A traffic police officer who sees three open counters and sends you to the least busy one. If a counter closes, nobody is sent there.',
+  'ingress': 'The building\'s front desk that knows which floor each department is on and sends visitors up the right lift.',
+  'auth': 'When you logged in, a trusted office gave you a signed ID card with an expiry time. Anyone in the building can check the signature without phoning that office.',
+  'gateway': 'The receptionist. Checks your ID card is genuine and not expired, makes sure you are not visiting too often, and walks you to the right department.',
+  'discovery': 'A live staff directory: "The orders department has three clerks today, at desks 7, 11 and 15." Desks change every day; the directory keeps up.',
+  'resilience': 'The fuse box in your home. If one department keeps failing, its switch trips so the trouble doesn\'t spread to the whole building, and visitors get a polite "please try again soon".',
+  'mesh': 'Sealed internal mail between departments, so even inside the building nobody can read or fake another department\'s messages.',
+  'tomcat': 'The department opens its door and assigns one clerk to handle your letter from start to finish.',
+  'security': 'A second check inside the department: is this ID card valid, and is this person allowed to place orders? Being inside the building is not enough.',
+  'mvc': 'The clerk opens your envelope and checks the form is filled in properly (the quantity is a number, an address is chosen) before doing anything with it.',
+  'service-layer': 'The real work: look up today\'s price, apply your coupon, make sure we have stock and write the order down. All of it happens together, or none of it does.',
+  'interservice': 'The order clerk phones the warehouse department: "Please hold one pair of shoes for this order."',
+  'cache': 'A quick shelf right next to the clerk with the most-asked-for information, like today\'s prices, so nobody walks to the basement archive every time.',
+  'jpa': 'A translator that turns the clerk\'s notes into the exact language the vault understands.',
+  'db': 'The vault. Once your order is written here and the door shuts, it survives power cuts and crashes, and a copy is kept in a second building.',
+  'events': 'A loudspeaker announcement: "New order!" Payments, email, the warehouse and delivery each hear it and do their part without making you wait.',
+  'external': 'The bank\'s own payment counter. Your card details go straight to them, and they send the shop a signed note when the money arrives.',
+  'response': 'The reply letter, "Order received, number ORD-24-88123", travels back through every checkpoint it came in through.',
+  'render': 'Your screen changes to the confirmation page. Everything above happened in about a fifth of a second.',
+  'observability': 'CCTV and a logbook for the whole building. Every letter has a tracking number, so if one goes missing you can see exactly where it stopped.',
+  'config': 'Each building has its own key cabinet and settings sheet. The same staff can work in the test building or the real one just by reading a different sheet.',
+  'k8s': 'A building manager who keeps the right number of clerks at work, replaces anyone who falls ill, and calls in extra staff during a big sale.',
+  'cicd': 'A quality-checked factory line: every change to the shop is built, tested and inspected the same way before customers ever see it.',
+  'hardening': 'A checklist for the whole building: locks on every door and window, not just a guard at the front gate.'
+};
 /* ================= APP ================= */
 (function () {
   const $ = (s, r = document) => r.querySelector(s);
@@ -2832,6 +3025,7 @@ terms:[['OWASP','Open Worldwide Application Security Project; publishes the Top 
         </div>
         <h3 id="h-${l.id}">${esc(l.title)}</h3>
         <p class="tagline">${esc(l.tag)}</p>
+        ${SIMPLE[l.id] ? `<div class="simple"><b>In plain words</b><span>${esc(SIMPLE[l.id])}</span></div>` : ''}
         <div class="stackpos" aria-hidden="true">${seg}</div>
       </div>
       <div class="layer-body">
@@ -2973,7 +3167,7 @@ terms:[['OWASP','Open Worldwide Application Security Project; publishes the Top 
     const r = layersEl.getBoundingClientRect(); const h = r.height - innerHeight;
     const f = Math.min(1, Math.max(0, -r.top / (h || 1)));
     prog.style.width = (f * 100) + '%';
-    if (r.top > innerHeight * 0.5) { const chip = $('#hereChip'); chip.className = 'here-chip phase-c'; chip.textContent = 'Overview'; $('#hereName').textContent = 'Simulator and architecture map'; }
+    if (r.top > innerHeight * 0.5) { const chip = $('#hereChip'); chip.className = 'here-chip phase-c'; chip.textContent = 'Overview'; $('#hereName').textContent = 'Story, console and architecture map'; }
     else if (!$('.layer.current') && current) setCurrent(current);
   }
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
@@ -3208,6 +3402,357 @@ terms:[['OWASP','Open Worldwide Application Security Project; publishes the Top 
     const el = document.getElementById(location.hash.slice(1));
     if (el) setTimeout(() => el.scrollIntoView({ block: 'start' }), 60);
   }
+})();
+/* ================= STORY MODE ================= */
+(function () {
+  const svg = document.getElementById('world');
+  if (!svg) return;
+  const stage = document.getElementById('stage');
+  const RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const W = 3080, H = 480;
+
+  /* ---------- drawing helpers ---------- */
+  const sign = (key, x, y, text) => {
+    const w = Math.round(text.length * 8.6 + 30);
+    return `<g class="sign" id="sg-${key}" transform="translate(${x - w / 2},${y})"><rect width="${w}" height="32" rx="9"/><text x="${w / 2}" y="21.5" text-anchor="middle">${text}</text></g>`;
+  };
+  const person = (x, g, o = {}) => {
+    const body = o.body || '#334155', skin = o.skin || '#d9a27a', glove = o.glove || skin;
+    const arm = (side, id) => {
+      const ax = side === 'left' ? -35 : 24, hx = side === 'left' ? -29.5 : 29.5;
+      const inner = `<rect x="${ax}" y="-122" width="11" height="52" rx="5.5" fill="${body}"/><circle cx="${hx}" cy="-67" r="7" fill="${glove}"/>`;
+      return id ? `<g class="arm" id="${id}">${inner}</g>` : inner;
+    };
+    return `<g transform="translate(${x},${g})">
+      <ellipse cx="0" cy="2" rx="30" ry="6" fill="#000" opacity=".25"/>
+      <rect x="-15" y="-60" width="12" height="60" rx="4" fill="${o.legs || '#1e293b'}"/><rect x="3" y="-60" width="12" height="60" rx="4" fill="${o.legs || '#1e293b'}"/>
+      <rect x="-25" y="-128" width="50" height="74" rx="16" fill="${body}"/>
+      ${o.belt ? `<rect x="-25" y="-68" width="50" height="7" fill="${o.belt}"/>` : ''}
+      ${o.tie ? `<path d="M0 -127 L-5 -110 L0 -92 L5 -110Z" fill="${o.tie}"/>` : ''}
+      ${o.badge ? `<path d="M12 -115 l3 6 6 1 -4.5 4 1 6 -5.5 -3 -5.5 3 1 -6 -4.5 -4 6 -1z" fill="#fbbf24"/>` : ''}
+      ${arm('left', o.armSide === 'left' ? o.armId : null)}
+      ${arm('right', o.armSide === 'right' ? o.armId : null)}
+      <circle cx="0" cy="-149" r="20" fill="${skin}"/>
+      <circle cx="-7" cy="-151" r="2.4" fill="#0f172a"/><circle cx="7" cy="-151" r="2.4" fill="#0f172a"/>
+      <path d="M-7 -141 Q0 -135 7 -141" stroke="#0f172a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      ${o.cap ? `<rect x="-22" y="-178" width="44" height="16" rx="6" fill="${o.cap}"/><rect x="-26" y="-166" width="52" height="6" rx="3" fill="#0b1020"/><circle cx="0" cy="-171" r="3.4" fill="#fbbf24"/>`
+        : `<path d="M-20 -152 Q-20 -174 0 -172 Q20 -174 20 -152 Q13 -163 0 -163 Q-13 -163 -20 -152Z" fill="${o.hair || '#2b1d14'}"/>`}
+    </g>`;
+  };
+  let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  let stars = '';
+  for (let i = 0; i < 140; i++) stars += `<circle cx="${(rnd() * W).toFixed(0)}" cy="${(rnd() * 330).toFixed(0)}" r="${(rnd() * 1.4 + .4).toFixed(1)}" opacity="${(rnd() * .5 + .2).toFixed(2)}"/>`;
+
+  /* ---------- the world ---------- */
+  svg.innerHTML = `<title id="worldT">Animated journey of a request</title>
+  <g class="stars" fill="#cbd5e1">${stars}</g>
+  <rect x="0" y="400" width="${W}" height="80" class="ground"/>
+  <line x1="0" y1="400" x2="${W}" y2="400" class="ground-line"/>
+
+  <!-- home: desk + laptop -->
+  <g class="home">
+    <rect x="30" y="250" width="300" height="150" rx="16" class="room"/>
+    <rect x="60" y="330" width="250" height="12" rx="4" fill="#7c5a3c"/>
+    <rect x="72" y="342" width="10" height="58" fill="#5b412b"/><rect x="288" y="342" width="10" height="58" fill="#5b412b"/>
+    <rect x="80" y="196" width="190" height="128" rx="10" fill="#1f2937" stroke="#64748b" stroke-width="2"/>
+    <g id="screen">
+      <rect x="90" y="206" width="170" height="106" rx="4" fill="#f8fafc"/>
+      <rect x="90" y="206" width="170" height="16" rx="4" fill="#6366f1"/>
+      <text x="98" y="218" class="scr-t" fill="#fff">ExampleMart</text>
+      <rect x="98" y="230" width="50" height="40" rx="6" fill="#fde68a"/>
+      <path d="M104 258 q10 -14 24 -6 l14 4 v6 h-38z" fill="#ef4444"/>
+      <text x="156" y="242" class="scr-t" fill="#0f172a">Running shoes</text>
+      <text x="156" y="258" class="scr-t" fill="#475569">₹2,699 · size 9</text>
+      <g id="btn"><rect x="156" y="270" width="92" height="22" rx="6"/><text x="202" y="285" text-anchor="middle" class="scr-t" fill="#1f1300">Place order</text></g>
+      <g id="screen-ok"><rect x="90" y="206" width="170" height="106" rx="4" fill="#ecfdf5"/><circle cx="175" cy="242" r="18" fill="#22c55e"/><path d="M166 242 l6 7 12 -14" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="175" y="281" text-anchor="middle" class="scr-big" fill="#065f46">Order placed!</text><text x="175" y="298" text-anchor="middle" class="scr-t" fill="#047857">ORD-24-88123</text></g>
+      <g id="screen-bad"><rect x="90" y="206" width="170" height="106" rx="4" fill="#fef2f2"/><circle cx="175" cy="242" r="18" fill="#ef4444"/><path d="M167 234 l16 16 M183 234 l-16 16" stroke="#fff" stroke-width="4" stroke-linecap="round"/><text x="175" y="281" text-anchor="middle" class="scr-big" fill="#991b1b">Request blocked</text><text x="175" y="298" text-anchor="middle" class="scr-t" fill="#b91c1c">403 Forbidden</text></g>
+    </g>
+    <path d="M62 324 h226 l-14 10 h-198z" fill="#94a3b8"/>
+    <g transform="translate(250,300)"><g id="cursor"><path d="M0 0 l0 22 6 -6 5 11 4 -2 -5 -11 9 0z" fill="#fff" stroke="#0f172a" stroke-width="1.5"/></g></g>
+  </g>
+  ${sign('home', 175, 412, 'Your laptop')}
+
+  <!-- cable + router -->
+  <path d="M276 330 C 320 330, 330 386, 380 386" class="cable"/>
+  <path id="wire-sig" d="M276 330 C 320 330, 330 386, 380 386" class="sig"/>
+  <g class="router">
+    <line x1="398" y1="362" x2="390" y2="318" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
+    <line x1="452" y1="362" x2="460" y2="318" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
+    <rect x="380" y="360" width="90" height="34" rx="9" fill="#334155" stroke="#64748b" stroke-width="2"/>
+    <circle cx="398" cy="377" r="4" class="led"/><circle cx="414" cy="377" r="4" class="led l2"/><circle cx="430" cy="377" r="4" class="led l3"/>
+  </g>
+  ${sign('router', 425, 446, 'Wi-Fi router')}
+
+  <!-- tower -->
+  <path d="M470 388 C 520 392, 545 395, 572 396" class="cable"/>
+  <path id="tower-sig" d="M470 388 C 520 392, 545 395, 572 396 L 600 160" class="sig"/>
+  <g class="tower" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" fill="none">
+    <path d="M560 400 L600 150 L640 400"/><path d="M572 330 L628 330 M580 270 L620 270 M588 210 L612 210 M572 330 L620 270 M628 330 L580 270 M580 270 L612 210 M620 270 L588 210"/>
+  </g>
+  <circle cx="600" cy="146" r="8" fill="#f87171"/>
+  <g class="waves" stroke="#22d3ee" stroke-width="3.5" fill="none" stroke-linecap="round">
+    <path class="wave w1" d="M620 128 Q634 146 620 164"/><path class="wave w2" d="M634 116 Q656 146 634 176"/><path class="wave w3" d="M648 104 Q678 146 648 188"/>
+    <path class="wave w1" d="M580 128 Q566 146 580 164"/><path class="wave w2" d="M566 116 Q544 146 566 176"/><path class="wave w3" d="M552 104 Q522 146 552 188"/>
+  </g>
+  ${sign('tower', 600, 412, 'Internet provider')}
+
+  <!-- DNS phonebook -->
+  <rect x="776" y="250" width="8" height="150" fill="#64748b"/>
+  <g id="dns-board"><rect x="680" y="182" width="200" height="74" rx="10" fill="#0c2a3a" stroke="#22d3ee" stroke-width="2"/>
+    <text x="780" y="210" text-anchor="middle" class="w-t">api.example.com</text>
+    <text x="780" y="238" text-anchor="middle" class="w-t mono" id="dns-ans" fill="#fbbf24">= 13.35.7.21</text></g>
+  <g transform="translate(690,140)"><rect width="40" height="30" rx="4" fill="#38bdf8"/><rect x="18" width="4" height="30" fill="#0c4a6e"/><text x="20" y="-6" text-anchor="middle" class="w-s">A–Z</text></g>
+  ${sign('dns', 780, 446, 'Phonebook (DNS)')}
+
+  <!-- the internet: clouds + secure road -->
+  <g fill="#16213d"><circle cx="890" cy="95" r="26"/><circle cx="918" cy="84" r="32"/><circle cx="950" cy="98" r="24"/><circle cx="1010" cy="300" r="22"/><circle cx="1036" cy="290" r="28"/></g>
+  <path d="M640 160 C 760 60, 900 60, 1080 210" class="cable dashy"/>
+  <path id="net-sig" d="M640 160 C 760 60, 900 60, 1080 210" class="sig"/>
+  <g id="big-lock" transform="translate(940,250)">
+    <path id="big-shackle" d="M-16 0 v-14 a16 16 0 0 1 32 0 v14" stroke="#fbbf24" stroke-width="7" fill="none"/>
+    <rect x="-26" y="0" width="52" height="40" rx="8" fill="#fbbf24"/><circle cx="0" cy="18" r="6" fill="#78350f"/><rect x="-2" y="18" width="4" height="12" fill="#78350f"/>
+  </g>
+  ${sign('tls', 940, 412, 'Secret handshake (TLS)')}
+
+  <!-- the cloud -->
+  <g class="cloud-wall"><circle cx="1150" cy="44" r="34"/><circle cx="1210" cy="30" r="40"/><circle cx="1600" cy="34" r="36"/><circle cx="2100" cy="30" r="42"/><circle cx="2600" cy="36" r="36"/><circle cx="2980" cy="44" r="34"/>
+    <rect x="1080" y="40" width="1960" height="362" rx="40"/></g>
+  <text x="1130" y="96" class="w-h">ExampleMart in the cloud</text>
+  <text x="1130" y="120" class="w-s">AWS · Mumbai region</text>
+
+  <!-- CDN branch -->
+  <g class="cdn">
+    <polygon points="1120,256 1200,200 1280,256" fill="#334e7c"/>
+    <rect x="1132" y="254" width="136" height="146" fill="#1e3a5f"/>
+    <rect x="1150" y="276" width="34" height="28" rx="3" class="win"/><rect x="1216" y="276" width="34" height="28" rx="3" class="win"/>
+    <rect x="1150" y="318" width="34" height="28" rx="3" class="win"/><rect x="1216" y="318" width="34" height="28" rx="3" class="win"/>
+    <rect x="1186" y="350" width="28" height="50" rx="3" fill="#0f172a"/>
+    <text x="1200" y="246" text-anchor="middle" class="w-s" fill="#e2e8f0">BRANCH</text>
+  </g>
+  ${sign('cdn', 1200, 446, 'Nearby branch (CDN)')}
+
+  <!-- WAF: police officer + barrier -->
+  <rect x="1452" y="296" width="14" height="104" rx="3" fill="#94a3b8"/>
+  <g id="waf-gate"><rect x="1366" y="322" width="90" height="12" rx="6" fill="#f8fafc"/><rect x="1376" y="322" width="16" height="12" fill="#ef4444"/><rect x="1408" y="322" width="16" height="12" fill="#ef4444"/><rect x="1440" y="322" width="14" height="12" fill="#ef4444"/></g>
+  ${person(1510, 400, { body: '#1d4ed8', cap: '#1e3a8a', badge: true, glove: '#f8fafc', belt: '#0b1020', armSide: 'left', armId: 'waf-arm' })}
+  <g id="waf-glass"><circle cx="1452" cy="250" r="17" fill="rgba(186,230,253,.25)" stroke="#e2e8f0" stroke-width="4"/><line x1="1464" y1="262" x2="1480" y2="280" stroke="#e2e8f0" stroke-width="6" stroke-linecap="round"/></g>
+  <g id="stop-sign"><polygon points="1530,170 1546,170 1558,182 1558,198 1546,210 1530,210 1518,198 1518,182" fill="#dc2626" stroke="#fff" stroke-width="2"/><text x="1538" y="195" text-anchor="middle" class="w-stop">STOP</text></g>
+  ${sign('waf', 1440, 412, 'Security guard (WAF)')}
+
+  <!-- Load balancer: traffic police -->
+  <g class="lanes" stroke-width="5" stroke-linecap="round" fill="none">
+    <path class="lane" d="M1700 186 H1780 m-12 -8 l12 8 -12 8"/><path class="lane" id="lane-b" d="M1700 222 H1780 m-12 -8 l12 8 -12 8"/><path class="lane" d="M1700 258 H1780 m-12 -8 l12 8 -12 8"/>
+  </g>
+  <text x="1792" y="191" class="w-s">A</text><text x="1792" y="227" class="w-s">B</text><text x="1792" y="263" class="w-s">C</text>
+  ${person(1680, 400, { body: '#e2e8f0', cap: '#0f172a', glove: '#ffffff', belt: '#f59e0b', armSide: 'right', armId: 'lb-arm', legs: '#334155' })}
+  ${sign('lb', 1690, 446, 'Traffic police (Load balancer)')}
+
+  <!-- Gateway: reception -->
+  <g transform="translate(1830,150)"><rect width="160" height="34" rx="8" fill="#4c1d95"/><text x="80" y="23" text-anchor="middle" class="w-t">RECEPTION</text></g>
+  ${person(1950, 400, { body: '#7c3aed', hair: '#111827', tie: '#fbbf24' })}
+  <rect x="1828" y="330" width="166" height="70" rx="8" fill="#3b2a5a" stroke="#6d28d9" stroke-width="2"/>
+  <g id="gw-stamp"><rect x="1866" y="208" width="18" height="34" rx="5" fill="#a16207"/><rect x="1852" y="240" width="46" height="16" rx="4" fill="#16a34a"/></g>
+  ${sign('gw', 1910, 412, 'Reception (API gateway)')}
+
+  <!-- Circuit breaker -->
+  <rect x="2060" y="210" width="76" height="106" rx="10" fill="#1f2937" stroke="#64748b" stroke-width="2"/>
+  <circle cx="2098" cy="236" r="16" class="cb-glow"/><circle id="cb-light" cx="2098" cy="236" r="10"/>
+  <rect x="2086" y="262" width="24" height="40" rx="6" fill="#0f172a"/><rect id="cb-lever" x="2090" y="266" width="16" height="16" rx="4" fill="#e2e8f0"/>
+  ${sign('cb', 2098, 446, 'Safety switch (Circuit breaker)')}
+
+  <!-- Order service: clerk -->
+  <g><rect x="2196" y="134" width="140" height="104" rx="10" fill="#0f2a1f" stroke="#22c55e" stroke-width="2"/>
+    <text x="2212" y="162" class="w-t ck c1">✓ today's price</text><text x="2212" y="190" class="w-t ck c2">✓ coupon −10%</text><text x="2212" y="218" class="w-t ck c3">✓ stock held</text></g>
+  ${person(2310, 400, { body: '#16a34a', hair: '#3b2a20', tie: '#0f172a' })}
+  <rect x="2200" y="330" width="160" height="70" rx="8" fill="#14532d" stroke="#22c55e" stroke-width="2"/>
+  <rect x="2316" y="292" width="40" height="30" rx="4" fill="#0f172a" stroke="#64748b"/><rect x="2332" y="322" width="8" height="8" fill="#64748b"/>
+  ${sign('svc', 2280, 412, 'Order desk (Spring Boot service)')}
+
+  <!-- Redis shelf -->
+  <g><rect x="2418" y="186" width="6" height="214" fill="#78716c"/><rect x="2530" y="186" width="6" height="214" fill="#78716c"/>
+    <rect x="2418" y="250" width="118" height="6" fill="#a8a29e"/><rect x="2418" y="312" width="118" height="6" fill="#a8a29e"/><rect x="2418" y="374" width="118" height="6" fill="#a8a29e"/>
+    <rect x="2430" y="222" width="26" height="28" rx="3" fill="#f97316"/><rect x="2462" y="228" width="22" height="22" rx="3" fill="#fb923c"/><rect x="2492" y="218" width="30" height="32" rx="3" fill="#ea580c"/>
+    <rect x="2432" y="284" width="30" height="28" rx="3" fill="#fb923c"/><rect x="2468" y="290" width="24" height="22" rx="3" fill="#f97316"/>
+    <rect x="2440" y="346" width="30" height="28" rx="3" fill="#ea580c"/><rect x="2490" y="350" width="26" height="24" rx="3" fill="#fb923c"/>
+    <polygon id="bolt" points="2482,140 2462,176 2478,176 2468,204 2494,166 2478,166 2490,140" fill="#fde047"/></g>
+  ${sign('redis', 2476, 446, 'Quick shelf (Redis cache)')}
+
+  <!-- Vault -->
+  <circle cx="2668" cy="290" r="88" class="vault-glow"/>
+  <rect x="2582" y="200" width="172" height="200" rx="14" fill="#1e293b" stroke="#475569" stroke-width="3"/>
+  <circle cx="2668" cy="290" r="66" fill="#334155" stroke="#94a3b8" stroke-width="6"/>
+  <g id="vault-wheel"><circle cx="2668" cy="290" r="22" fill="none" stroke="#e2e8f0" stroke-width="6"/>
+    <path d="M2668 250 V330 M2628 290 H2708 M2640 262 L2696 318 M2696 262 L2640 318" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round"/></g>
+  ${sign('db', 2668, 412, 'Vault (Database)')}
+
+  <!-- Kafka announcements -->
+  <rect x="2846" y="170" width="8" height="230" fill="#64748b"/>
+  <polygon points="2850,150 2890,128 2890,196 2850,174" fill="#f59e0b"/><rect x="2836" y="150" width="16" height="24" rx="4" fill="#d97706"/>
+  <g class="mwaves" stroke="#fbbf24" stroke-width="3.5" fill="none" stroke-linecap="round"><path class="mw w1" d="M2902 142 Q2914 162 2902 182"/><path class="mw w2" d="M2916 130 Q2934 162 2916 194"/></g>
+  <g class="fan" style="--tx:40px;--ty:-70px"><rect x="2896" y="196" width="40" height="26" rx="4" fill="#60a5fa"/><rect x="2896" y="202" width="40" height="5" fill="#1e3a8a"/><text x="2916" y="236" text-anchor="middle" class="w-s">Payment</text></g>
+  <g class="fan" style="--tx:70px;--ty:10px"><rect x="2896" y="196" width="40" height="26" rx="3" fill="#f8fafc"/><path d="M2896 196 l20 14 20 -14" stroke="#64748b" stroke-width="2" fill="none"/><text x="2916" y="236" text-anchor="middle" class="w-s">Email</text></g>
+  <g class="fan" style="--tx:30px;--ty:90px"><rect x="2892" y="196" width="34" height="24" rx="3" fill="#22c55e"/><rect x="2926" y="204" width="16" height="16" rx="3" fill="#16a34a"/><circle cx="2902" cy="222" r="5" fill="#0f172a"/><circle cx="2932" cy="222" r="5" fill="#0f172a"/><text x="2916" y="242" text-anchor="middle" class="w-s">Delivery</text></g>
+  ${sign('kafka', 2850, 446, 'Announcements (Kafka)')}
+
+  <!-- the packet (letter) -->
+  <g id="pk" transform="translate(178,262)">
+    <circle r="34" class="pk-glow"/>
+    <rect class="env" x="-26" y="-17" width="52" height="34" rx="5"/>
+    <path class="flap" d="M-26 -17 L0 3 L26 -17" fill="none"/>
+    <g class="stk" id="pk-token"><rect x="-22" y="2" width="18" height="12" rx="2" fill="#8b5cf6"/><text x="-13" y="11.5" text-anchor="middle" class="pk-t">ID</text></g>
+    <g class="stk" id="pk-stamp"><circle cx="16" cy="-5" r="7" fill="#ef4444"/><text x="16" y="-2" text-anchor="middle" class="pk-t">#</text></g>
+    <g class="stk" id="pk-lock"><path d="M-6 -24 v-5 a6 6 0 0 1 12 0 v5" stroke="#f59e0b" stroke-width="3" fill="none"/><rect x="-9" y="-25" width="18" height="13" rx="3" fill="#fbbf24"/></g>
+    <g class="stk" id="pk-ok"><rect x="2" y="2" width="22" height="12" rx="2" fill="#16a34a"/><text x="13" y="11.5" text-anchor="middle" class="pk-t">OK</text></g>
+    <g class="stk" id="pk-x"><circle r="16" fill="#dc2626"/><path d="M-7 -7 l14 14 M7 -7 l-14 14" stroke="#fff" stroke-width="4" stroke-linecap="round"/></g>
+  </g>`;
+
+  /* ---------- the script ---------- */
+  const P = { screen: [178, 262], router: [425, 338], tower: [600, 178], dns: [700, 306], tls: [940, 196], cdn: [1200, 330], waf: [1328, 318],
+    lb: [1612, 330], gw: [1878, 312], cb: [2098, 356], svc: [2240, 312], redis: [2476, 334], db: [2668, 290], kafka: [2790, 316] };
+  const STEPS = [
+    { key: 'home', t: 'Meet your request', s: 'Every time you press a button on a website, your computer writes a tiny letter called a request. Let\'s follow one letter: your order for a pair of running shoes.', tech: 'an HTTP request', link: 'ui-event', cam: 230 },
+    { key: 'home', t: 'You click "Place order"', s: 'The shop page on your laptop notices the click, greys out the button so you can\'t order twice by accident, and starts writing the letter.', tech: 'an Angular component', link: 'ui-event', cam: 230, seq: [[0, 'st-cursor'], [800, 'st-clicked'], [1000, 'st-pk']], wait: 1400 },
+    { key: 'home', t: 'An ID card and a tracking number', s: 'Before it leaves, the app sticks your signed ID card on the letter (so the shop knows it\'s really you) and a tracking number (so engineers can find this exact letter later).', tech: 'HTTP interceptors, JWT and a request ID', link: 'http', cam: 230, at: P.screen, seq: [[200, 'st-token'], [800, 'st-trk']] },
+    { key: 'router', t: 'Down the cable to your router', s: 'The letter leaves your laptop as electrical and radio signals and reaches your Wi-Fi router at home.', tech: 'TCP/IP and Wi-Fi', link: 'tcp', path: [[240, 318], [330, 372]], at: P.router, pre: ['st-wire'], seq: [[0, 'st-router']] },
+    { key: 'tower', t: 'Out to your internet provider', s: 'The router hands it to your internet provider through fibre cables and towers. From here it hops between many networks, like a parcel moving between sorting centres.', tech: 'your ISP and IP routing', link: 'tcp', path: [[520, 392], [572, 396]], at: P.tower, pre: ['st-towersig'], seq: [[0, 'st-tower']] },
+    { key: 'dns', t: 'Asking the internet phonebook', s: 'The letter only knows the shop\'s name, "api.example.com". Computers need a number, so the internet\'s phonebook looks it up: 13.35.7.21.', tech: 'DNS', link: 'dns', path: [[650, 230]], at: P.dns, seq: [[300, 'st-dns']] },
+    { key: 'tls', t: 'Locked in a secret box', s: 'Your laptop and the shop do a secret handshake that creates a key only the two of them share. From now on nobody on the road can read or change the letter, and the shop has proved it is the real shop.', tech: 'TLS 1.3 (the padlock in your browser)', link: 'tls', path: [[820, 140]], at: P.tls, pre: ['st-net'], seq: [[200, 'st-lock']] },
+    { key: 'cdn', t: 'The shop\'s nearby branch', s: 'Big shops keep a branch close to you. It already has the website\'s pictures and pages, so those load fast. Your order is not stored here; it is passed on to head office.', tech: 'a CDN (CloudFront)', link: 'cdn', path: [[1080, 240]], at: P.cdn, seq: [[0, 'st-cdn']] },
+    { key: 'waf', t: 'The security guard checks it', s: 'A guard scans every letter for known tricks and turns away anyone knocking thousands of times a minute. Your letter looks normal, so the barrier goes up.', tech: 'a web application firewall (WAF)', link: 'waf', at: P.waf, seq: [[0, 'st-scan'], [1500, 'st-gate']], wait: 1800,
+      attack: { t: 'The security guard stops it', s: 'This letter hides a trick: someone typed a piece of database code into the coupon box. The guard recognises it and stops it right here. The shop\'s computers never even see it.', seq: [[0, 'st-scan'], [1400, 'st-stop'], [1400, 'st-bad']] } },
+    { key: 'lb', t: 'Traffic police picks a counter', s: 'Three identical counters are open. The officer sends your letter to the least busy one, B, and never sends anyone to a counter that has closed.', tech: 'a load balancer', link: 'lb', path: [[1430, 318], [1520, 330]], at: P.lb, seq: [[0, 'st-lb']] },
+    { key: 'gw', t: 'Reception checks your ID card', s: 'The receptionist checks the signature and expiry date on your ID card, makes sure you are not sending too many letters, stamps it "OK" and points to the Orders department.', tech: 'an API gateway', link: 'gateway', at: P.gw, seq: [[100, 'st-gwstamp'], [550, 'st-okstamp']] },
+    { key: 'cb', t: 'The safety switch is on', s: 'Like the fuse box at home: if a department keeps failing, its switch trips so the trouble doesn\'t spread to the whole building, and visitors get a polite "try again soon". Today the light is green.', tech: 'a circuit breaker', link: 'resilience', at: P.cb, seq: [[0, 'st-cb']] },
+    { key: 'svc', t: 'The order clerk does the real work', s: 'The clerk opens the letter, checks the form is filled in properly, looks up today\'s price, applies your coupon and asks the warehouse to hold your shoes.', tech: 'a Spring Boot microservice', link: 'service-layer', at: P.svc, seq: [[0, 'st-service']], wait: 2000 },
+    { key: 'redis', t: 'A quick shelf for common answers', s: 'Prices are asked for thousands of times a minute, so a copy sits on a fast shelf right next to the clerk instead of in the basement archive.', tech: 'a Redis cache', link: 'cache', at: P.redis, seq: [[0, 'st-redis']] },
+    { key: 'db', t: 'Written into the vault', s: 'Your order is written into the vault. Once the door shuts it survives power cuts and crashes, and a copy is kept in a second building nearby.', tech: 'a PostgreSQL database', link: 'db', at: P.db, seq: [[0, 'st-vault']], wait: 1600 },
+    { key: 'kafka', t: 'An announcement to the other teams', s: '"New order!" Payments, email and delivery each hear the announcement and start their part. You don\'t have to wait for any of them.', tech: 'Kafka events', link: 'events', at: P.kafka, seq: [[0, 'st-kafka']] },
+    { key: 'home', t: 'The reply races back', s: 'A reply letter saying "Order placed" travels back along the same road, through every checkpoint, and your screen updates.', tech: 'an HTTP 201 response', link: 'response', ret: true, at: P.screen, pre: ['st-ret'], seq: [[0, 'st-done'], [200, 'st-arrived']], dur: 3600 },
+    { key: 'home', t: 'All of that took about 0.2 seconds', s: 'Sixteen stops, kilometres of cable, a guard, a receptionist and a vault, in less time than a blink. Scroll down to explore each stop in detail, or break things on purpose in the engineer\'s console.', tech: 'the whole journey', link: 'map', cam: 230, final: true }
+  ];
+  const BLOCKED = { key: 'home', t: 'Blocked at the gate', s: 'The guard turned the bad letter away and sent back a short note: "403 Forbidden". This is why systems have several layers of protection: even if the shop\'s own code had a weakness, the letter never reached it.', tech: 'defence in depth', link: 'hardening', ret: true, at: P.screen, pre: [], seq: [[0, 'st-blocked'], [200, 'st-arrived']], dur: 2600, final: true };
+
+  /* ---------- engine ---------- */
+  const pk = document.getElementById('pk');
+  const el = id => document.getElementById(id);
+  let cam = 230, camT = 230, vw = 820, pos = P.screen.slice(), raf = null, timers = [], cur = 0, playing = false, attack = false, moving = null;
+  const steps = () => attack ? [...STEPS.slice(0, 9).map((s, i) => i === 8 ? Object.assign({}, s, s.attack, { attackMode: true }) : s), BLOCKED] : STEPS;
+
+  function sizeView() {
+    vw = stage.clientWidth < 640 ? 540 : 860;
+    stage.style.aspectRatio = vw + ' / ' + H;
+    apply();
+  }
+  function apply() {
+    const x = Math.max(0, Math.min(W - vw, cam - vw / 2));
+    svg.setAttribute('viewBox', `${x.toFixed(1)} 0 ${vw} ${H}`);
+    pk.setAttribute('transform', `translate(${pos[0].toFixed(1)},${pos[1].toFixed(1)})`);
+  }
+  function loop() {
+    if (moving) {
+      const m = moving; const t = Math.min(1, (performance.now() - m.t0) / m.dur);
+      const e = t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      let d = e * m.total, i = 0;
+      while (i < m.seg.length - 1 && d > m.seg[i]) { d -= m.seg[i]; i++; }
+      const a = m.pts[i], b = m.pts[i + 1], f = m.seg[i] ? Math.min(1, d / m.seg[i]) : 1;
+      pos = [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f];
+      camT = pos[0];
+      if (t >= 1) { moving = null; m.done(); }
+    }
+    cam += (camT - cam) * (moving ? 0.14 : 0.09);
+    apply();
+    if (moving || Math.abs(camT - cam) > 0.5) raf = requestAnimationFrame(loop); else { cam = camT; apply(); raf = null; }
+  }
+  const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
+  function moveAlong(pts, dur, done) {
+    const seg = []; for (let i = 0; i < pts.length - 1; i++) seg.push(Math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]));
+    const total = seg.reduce((a, b) => a + b, 0);
+    if (RM || total < 1) { pos = pts[pts.length - 1].slice(); camT = pos[0]; done(); kick(); return; }
+    moving = { pts, seg, total, dur: dur || Math.min(2400, 500 + total * 2.2), t0: performance.now(), done }; kick();
+  }
+  const clearAll = () => { timers.forEach(clearTimeout); timers = []; moving = null; };
+  const later = (ms, fn) => timers.push(setTimeout(fn, RM ? 0 : ms));
+  const FLAG = /^st-/;
+  const resetFlags = () => Array.from(svg.classList).filter(c => FLAG.test(c)).forEach(c => svg.classList.remove(c));
+  const add = c => svg.classList.add(c);
+
+  // route of positions visited up to step i (for the return trip)
+  function routeTo(list, i) {
+    const pts = [];
+    for (let k = 0; k <= i && k < list.length; k++) { const s = list[k]; if (s.ret) continue; (s.path || []).forEach(p => pts.push(p)); if (s.at) pts.push(s.at); }
+    return pts;
+  }
+
+  // apply final state of a step instantly
+  function settle(s) {
+    (s.pre || []).forEach(add); (s.seq || []).forEach(([, c]) => add(c));
+    if (s.at) pos = s.at.slice();
+  }
+
+  function go(n, animate = true) {
+    const list = steps(); n = Math.max(0, Math.min(list.length - 1, n));
+    clearAll(); resetFlags(); svg.classList.toggle('attack', attack);
+    pos = P.screen.slice();
+    for (let k = 0; k < n; k++) settle(list[k]);
+    // transient flags that should not persist into later steps
+    ['st-wire', 'st-towersig', 'st-net', 'st-scan', 'st-gwstamp'].forEach(c => svg.classList.remove(c));
+    const s = list[n]; cur = n;
+    renderCaption(list, n);
+    if (!animate) { settle(s); camT = s.cam || pos[0]; cam = camT; apply(); return; }
+    (s.pre || []).forEach(add);
+    if (n === 0) { pos = P.screen.slice(); }
+    const after = () => {
+      let maxD = 0;
+      (s.seq || []).forEach(([d, c]) => { maxD = Math.max(maxD, d); later(d, () => add(c)); });
+      if (s.cam) camT = s.cam; kick();
+      later(maxD + 400, () => { ['st-wire', 'st-towersig', 'st-net'].forEach(c => svg.classList.remove(c)); });
+      if (playing) {
+        if (s.final) { later(maxD + 600, () => setPlaying(false)); return; }
+        const read = Math.max(3800, s.s.length * 42) + (s.wait || 0);
+        later(read, () => go(cur + 1));
+      }
+    };
+    if (s.ret) {
+      const back = routeTo(list, n - 1).reverse();
+      back.push(P.screen);
+      moveAlong([pos.slice(), ...back], s.dur, after);
+    } else if (s.at && (s.path || pos[0] !== s.at[0] || pos[1] !== s.at[1])) {
+      moveAlong([pos.slice(), ...(s.path || []), s.at], null, after);
+    } else {
+      camT = s.cam || pos[0]; kick(); after();
+    }
+  }
+
+  /* ---------- caption + controls ---------- */
+  const cap = { num: el('storyNum'), title: el('storyTitle'), simple: el('storySimple'), tech: el('storyTech'), dots: el('storyDots') };
+  function renderCaption(list, n) {
+    const s = list[n];
+    cap.num.textContent = `Stop ${n + 1} of ${list.length}`;
+    cap.title.textContent = s.t; cap.simple.textContent = s.s;
+    cap.tech.textContent = s.tech; cap.tech.href = s.link === 'map' ? '#map' : '#layer-' + s.link;
+    cap.dots.innerHTML = list.map((x, i) => `<button type="button" class="${i < n ? 'past' : i === n ? 'on' : ''}${x.attackMode ? ' bad' : ''}" aria-label="Stop ${i + 1}: ${x.t.replace(/"/g, '')}" data-i="${i}"></button>`).join('');
+    document.querySelectorAll('#world .sign').forEach(g => g.classList.toggle('hot', g.id === 'sg-' + s.key));
+    el('storyPrev').disabled = n === 0; el('storyNext').disabled = n === list.length - 1;
+  }
+  function setPlaying(p) {
+    playing = p;
+    el('storyPlay').textContent = p ? '❚❚ Pause' : (cur >= steps().length - 1 ? '↻ Replay' : '▶ Play');
+    stage.classList.toggle('playing', p);
+  }
+  el('storyPlay').addEventListener('click', () => {
+    if (playing) { setPlaying(false); timers.forEach(clearTimeout); timers = []; return; }
+    setPlaying(true); el('storyStart').hidden = true;
+    go(cur >= steps().length - 1 ? 0 : (cur === 0 ? 0 : cur + 1));
+  });
+  el('storyStart').addEventListener('click', () => { el('storyStart').hidden = true; setPlaying(true); go(0); });
+  el('storyNext').addEventListener('click', () => { el('storyStart').hidden = true; setPlaying(false); go(cur + 1); });
+  el('storyPrev').addEventListener('click', () => { setPlaying(false); go(cur - 1); });
+  cap.dots.addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (!b) return; el('storyStart').hidden = true; setPlaying(false); go(+b.dataset.i); });
+  el('storyMode').addEventListener('change', e => { attack = e.target.checked; setPlaying(false); go(0, false); el('storyStart').hidden = false; el('storyStart').querySelector('b').textContent = attack ? 'Send a suspicious letter' : 'Start the story'; });
+  stage.addEventListener('keydown', e => { if (e.key === 'ArrowRight') el('storyNext').click(); if (e.key === 'ArrowLeft') el('storyPrev').click(); });
+
+  addEventListener('resize', sizeView);
+  sizeView(); go(0, false);
 })();
 </script>
 
