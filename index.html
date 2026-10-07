@@ -423,6 +423,21 @@ footer{padding-block:30px 60px;color:var(--muted);font-size:14px;border-top:1px 
 #world.st-done #screen-ok,#world.st-blocked #screen-bad{opacity:1}
 
 
+
+/* full screen story */
+.fs-btn{position:absolute;top:12px;right:12px;z-index:3;display:inline-flex;align-items:center;gap:8px;font:600 13px var(--body);color:var(--ink);background:rgba(11,16,32,.72);border:1px solid var(--line-strong);border-radius:999px;padding:8px 13px;cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.fs-btn:hover{border-color:var(--glow)}
+.fs-btn .ico-close{display:none}
+.story.fs .fs-btn .ico-open{display:none}.story.fs .fs-btn .ico-close{display:inline}
+.story.fs{position:fixed;inset:0;z-index:200;margin:0;padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px));background:radial-gradient(900px 500px at 15% 0%,rgba(99,102,241,.22),transparent 60%),var(--bg);grid-template-columns:minmax(0,1fr) minmax(300px,380px);grid-template-rows:minmax(0,1fr);height:100%;gap:16px}
+.story:fullscreen{background:var(--bg)}
+.story.fs .stage{aspect-ratio:auto!important;height:100%;min-height:0}
+.story.fs .caption{overflow:auto;min-height:0}
+.story.fs .caption p{font-size:19px;min-height:0}
+.story.fs .caption h2{font-size:clamp(24px,2.6vw,34px)}
+@media (max-width:900px){.story.fs{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto}.story.fs .caption{max-height:46vh;padding:14px 16px;gap:8px}.story.fs .caption p{font-size:16px}}
+html.fs-lock,html.fs-lock body{overflow:hidden}
+
 /* narration */
 .voice-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .voice-btn{display:inline-flex;align-items:center;gap:8px;font:600 13px var(--body);color:#0b1020;background:var(--glow);border:0;border-radius:999px;padding:7px 13px;cursor:pointer}
@@ -478,9 +493,10 @@ footer{padding-block:30px 60px;color:var(--muted);font-size:14px;border-top:1px 
       <h1>What really happens after you <span class="click">click</span> “Place order”</h1>
       <p class="lede">Follow one tiny letter from your laptop, through cables, a security guard, a receptionist and a vault, and back again. No coding knowledge needed: press play and watch. Engineers can go deeper in the console and the 36 layer guides below.</p>
     </div>
-    <div class="story">
+    <div class="story" id="storyBox">
       <div class="stage" id="stage" tabindex="0" aria-label="Animated story. Use the arrow keys to move between stops.">
         <svg id="world" role="img" aria-labelledby="worldT" preserveAspectRatio="xMidYMid slice"></svg>
+        <button class="fs-btn" id="fsBtn" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path class="ico-open" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="ico-close" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Full screen</b></button>
         <button class="stage-start" id="storyStart" type="button"><span aria-hidden="true">▶</span><b>Start the story</b></button>
       </div>
       <aside class="caption" aria-live="polite">
@@ -3531,7 +3547,7 @@ const Voice = (function () {
   };
   let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
   let stars = '';
-  for (let i = 0; i < 140; i++) stars += `<circle cx="${(rnd() * W).toFixed(0)}" cy="${(rnd() * 330).toFixed(0)}" r="${(rnd() * 1.4 + .4).toFixed(1)}" opacity="${(rnd() * .5 + .2).toFixed(2)}"/>`;
+  for (let i = 0; i < 260; i++) stars += `<circle cx="${(rnd() * W).toFixed(0)}" cy="${(rnd() * 700 - 370).toFixed(0)}" r="${(rnd() * 1.4 + .4).toFixed(1)}" opacity="${(rnd() * .5 + .2).toFixed(2)}"/>`;
 
   /* ---------- the world ---------- */
   svg.innerHTML = `<title id="worldT">Animated journey of a request</title>
@@ -3725,17 +3741,51 @@ const Voice = (function () {
   /* ---------- engine ---------- */
   const pk = document.getElementById('pk');
   const el = id => document.getElementById(id);
-  let goId = 0, cam = 230, camT = 230, vw = 820, pos = P.screen.slice(), raf = null, timers = [], cur = 0, playing = false, attack = false, moving = null;
+  let vh = 480, vy = 0, goId = 0, cam = 230, camT = 230, vw = 820, pos = P.screen.slice(), raf = null, timers = [], cur = 0, playing = false, attack = false, moving = null;
   const steps = () => attack ? [...STEPS.slice(0, 9).map((s, i) => i === 8 ? Object.assign({}, s, s.attack, { attackMode: true }) : s), BLOCKED] : STEPS;
 
+  const box = document.getElementById('storyBox');
   function sizeView() {
-    vw = stage.clientWidth < 640 ? 540 : 860;
-    stage.style.aspectRatio = vw + ' / ' + H;
+    if (box.classList.contains('fs')) {
+      stage.style.aspectRatio = 'auto';
+      const r = stage.clientWidth / Math.max(1, stage.clientHeight);
+      vw = Math.round(Math.max(stage.clientWidth < 640 ? 540 : 900, Math.min(1500, H * r)));
+      vh = Math.round(vw / r); vy = H - vh;          // keep the ground at the bottom, show more sky
+    } else {
+      vw = stage.clientWidth < 640 ? 540 : 860; vh = H; vy = 0;
+      stage.style.aspectRatio = vw + ' / ' + H;
+    }
     apply();
   }
+
+  /* ---------- full screen ---------- */
+  const fsBtn = el('fsBtn');
+  const nativeFS = () => document.fullscreenElement || document.webkitFullscreenElement;
+  function setFS(on) {
+    box.classList.toggle('fs', on);
+    document.documentElement.classList.toggle('fs-lock', on);
+    fsBtn.setAttribute('aria-pressed', on);
+    fsBtn.querySelector('b').textContent = on ? 'Exit full screen' : 'Full screen';
+    requestAnimationFrame(sizeView);
+    if (!on) box.scrollIntoView({ block: 'center' });
+  }
+  function enterFS() {
+    setFS(true);   // the layout works even when the browser refuses real full screen (e.g. inside a frame)
+    const req = box.requestFullscreen || box.webkitRequestFullscreen;
+    if (req) { try { const p = req.call(box); if (p && p.catch) p.catch(() => {}); } catch (e) { /* stay in the in-page version */ } }
+  }
+  function exitFS() {
+    if (nativeFS()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); }
+    setFS(false);
+  }
+  const onFsChange = () => { if (!nativeFS() && box.classList.contains('fs') && box.dataset.native === '1') setFS(false); box.dataset.native = nativeFS() ? '1' : ''; };
+  document.addEventListener('fullscreenchange', onFsChange);
+  document.addEventListener('webkitfullscreenchange', onFsChange);
+  fsBtn.addEventListener('click', () => box.classList.contains('fs') ? exitFS() : enterFS());
+  addEventListener('keydown', e => { if (e.key === 'Escape' && box.classList.contains('fs') && !nativeFS()) exitFS(); });
   function apply() {
     const x = Math.max(0, Math.min(W - vw, cam - vw / 2));
-    svg.setAttribute('viewBox', `${x.toFixed(1)} 0 ${vw} ${H}`);
+    svg.setAttribute('viewBox', `${x.toFixed(1)} ${vy} ${vw} ${vh}`);
     pk.setAttribute('transform', `translate(${pos[0].toFixed(1)},${pos[1].toFixed(1)})`);
   }
   function loop() {
@@ -3838,7 +3888,7 @@ const Voice = (function () {
     setPlaying(true); el('storyStart').hidden = true;
     go(cur >= steps().length - 1 ? 0 : cur);
   });
-  el('storyStart').addEventListener('click', () => { el('storyStart').hidden = true; setPlaying(true); go(0); });
+  el('storyStart').addEventListener('click', () => { el('storyStart').hidden = true; enterFS(); setPlaying(true); go(0); });
   el('storyNext').addEventListener('click', () => { el('storyStart').hidden = true; setPlaying(false); go(cur + 1); });
   el('storyPrev').addEventListener('click', () => { setPlaying(false); go(cur - 1); });
   cap.dots.addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (!b) return; el('storyStart').hidden = true; setPlaying(false); go(+b.dataset.i); });
