@@ -12,6 +12,9 @@ An interactive, single-page guide that follows one **"Place order"** click throu
   a traffic cop (load balancer), reception (API gateway), a fuse box (circuit breaker), the order clerk
   (Spring Boot service), a quick shelf (Redis) and a vault (database), then a Kafka announcement, and races back.
   Tick "Send a suspicious letter" to watch the guard stop an attack. No coding knowledge needed.
+- **Voice narration.** The story is read aloud stop by stop and advances when the narrator finishes, with
+  speed and voice choices. Every layer also has a **Listen** button. Uses the browser's built-in
+  Web Speech API, so there are no audio files.
 - **"In plain words"** analogy on every one of the 36 layers.
 - **Engineer's console**: a live simulator that animates the request layer by layer, with 8 scenarios: happy path, CORS rejected,
   WAF block, expired JWT with silent refresh, rate limit, circuit breaker open, duplicate click (idempotency),

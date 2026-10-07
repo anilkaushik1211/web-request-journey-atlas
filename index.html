@@ -422,6 +422,21 @@ footer{padding-block:30px 60px;color:var(--muted);font-size:14px;border-top:1px 
 #world #screen-ok,#world #screen-bad{opacity:0;transition:opacity .6s}
 #world.st-done #screen-ok,#world.st-blocked #screen-bad{opacity:1}
 
+
+/* narration */
+.voice-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.voice-btn{display:inline-flex;align-items:center;gap:8px;font:600 13px var(--body);color:#0b1020;background:var(--glow);border:0;border-radius:999px;padding:7px 13px;cursor:pointer}
+.voice-btn.off{background:var(--surface-2);color:var(--muted);border:1px solid var(--line-strong)}
+.voice-btn.off .wv{opacity:.25}
+.mini-sel{font-size:13px;padding:5px 8px;border-radius:8px;max-width:100%;min-width:0;background:var(--surface-2);color:var(--ink);border:1px solid var(--line-strong)}
+#voicePick{flex:1 1 140px}
+.stage.playing:not(.muted-v) + .caption .voice-btn:not(.off) .wv{animation:talk .8s ease-in-out infinite}
+@keyframes talk{50%{opacity:.3}}
+.simple{flex-wrap:wrap}
+.simple span{flex:1 1 260px;min-width:0}
+.listen{display:inline-flex;align-items:center;gap:6px;flex:none;align-self:center;font:600 13px var(--body);color:var(--packet);background:transparent;border:1px solid color-mix(in srgb,var(--packet) 50%,transparent);border-radius:999px;padding:6px 12px;cursor:pointer}
+.listen:hover,.listen.on{background:var(--packet);color:var(--packet-ink)}
+
 /* plain-words callout on each layer */
 .simple{display:flex;gap:14px;align-items:flex-start;margin-top:16px;padding:14px 16px;border-radius:14px;background:linear-gradient(90deg,color-mix(in srgb,var(--packet) 12%,transparent),transparent);border:1px solid color-mix(in srgb,var(--packet) 30%,transparent);font-size:16.5px;line-height:1.6}
 .simple b{flex:none;font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--packet);padding-top:4px}
@@ -471,6 +486,13 @@ footer{padding-block:30px 60px;color:var(--muted);font-size:14px;border-top:1px 
       <aside class="caption" aria-live="polite">
         <div class="cap-top"><span class="eyebrow" id="storyNum">Stop 1 of 18</span>
           <label class="toggle" for="storyMode"><input type="checkbox" id="storyMode"> Send a suspicious letter</label></div>
+        <div class="voice-row" id="voiceRow">
+          <button class="voice-btn" id="voiceBtn" type="button" aria-pressed="true"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path class="wv" d="M16 8.5a4.5 4.5 0 0 1 0 7M18.5 6a8 8 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg><b>Voice on</b></button>
+          <label class="sr" for="voiceRate">Narration speed</label>
+          <select id="voiceRate" class="mini-sel"><option value="0.85">Slow</option><option value="1">Normal</option><option value="1.15">Fast</option></select>
+          <label class="sr" for="voicePick">Narrator voice</label>
+          <select id="voicePick" class="mini-sel" hidden></select>
+        </div>
         <h2 id="storyTitle">Meet your request</h2>
         <p id="storySimple">Every time you press a button on a website, your computer writes a tiny letter called a request.</p>
         <div class="cap-tech">Engineers call this <a id="storyTech" href="#layer-ui-event">an HTTP request</a></div>
@@ -2951,6 +2973,62 @@ const SIMPLE = {
   'cicd': 'A quality-checked factory line: every change to the shop is built, tested and inspected the same way before customers ever see it.',
   'hardening': 'A checklist for the whole building: locks on every door and window, not just a guard at the front gate.'
 };
+/* ================= NARRATION (Web Speech API) ================= */
+const Voice = (function () {
+  const synth = window.speechSynthesis;
+  const supported = !!(synth && window.SpeechSynthesisUtterance);
+  const get = (k, d) => { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } };
+  const put = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* ignore */ } };
+  let rate = get('rja-rate', 1), voiceName = get('rja-voice', ''), list = [], current = null, keepAlive = null;
+  const listeners = new Set();
+
+  function load() {
+    if (!supported) return;
+    list = synth.getVoices().filter(v => /^en/i.test(v.lang));
+    listeners.forEach(fn => fn(list));
+  }
+  if (supported) { load(); synth.addEventListener ? synth.addEventListener('voiceschanged', load) : (synth.onvoiceschanged = load); }
+
+  function pick() {
+    if (!list.length) return null;
+    return list.find(v => v.name === voiceName)
+      || list.find(v => /en-IN/i.test(v.lang))
+      || list.find(v => /Google UK English Female|Samantha|Microsoft (Aria|Jenny|Neerja)|Google US English/i.test(v.name))
+      || list.find(v => v.default) || list[0];
+  }
+
+  function stop() {
+    clearInterval(keepAlive); keepAlive = null;
+    if (current) { current.onend = current.onerror = null; current = null; }
+    if (supported) synth.cancel();
+  }
+
+  // Speaks text; calls onend once when finished (or after a safety timeout, since some browsers drop the end event).
+  function speak(text, onend) {
+    if (!supported) { onend && onend(); return; }
+    stop();
+    const u = new SpeechSynthesisUtterance(text);
+    const v = pick(); if (v) { u.voice = v; u.lang = v.lang; } else u.lang = 'en-IN';
+    u.rate = rate; u.pitch = 1;
+    let fired = false;
+    const finish = () => { if (fired) return; fired = true; clearTimeout(safety); clearInterval(keepAlive); keepAlive = null; if (current === u) current = null; onend && onend(); };
+    const words = text.split(/\s+/).length;
+    const safety = setTimeout(finish, (words / (2.5 * rate)) * 1000 + 4000);
+    u.onend = finish; u.onerror = finish;
+    current = u;
+    synth.speak(u);
+    // Chrome stops long utterances after ~15 s unless nudged
+    keepAlive = setInterval(() => { if (synth.speaking && !synth.paused) { synth.pause(); synth.resume(); } }, 10000);
+  }
+
+  return {
+    supported, speak, stop,
+    get rate() { return rate; }, setRate(r) { rate = r; put('rja-rate', r); },
+    get voiceName() { const v = pick(); return v ? v.name : ''; }, setVoice(n) { voiceName = n; put('rja-voice', n); },
+    voices: () => list, onVoices(fn) { listeners.add(fn); if (list.length) fn(list); },
+    get on() { return supported && get('rja-narrate', true); }, setOn(b) { put('rja-narrate', b); if (!b) stop(); }
+  };
+})();
 /* ================= APP ================= */
 (function () {
   const $ = (s, r = document) => r.querySelector(s);
@@ -3025,7 +3103,7 @@ const SIMPLE = {
         </div>
         <h3 id="h-${l.id}">${esc(l.title)}</h3>
         <p class="tagline">${esc(l.tag)}</p>
-        ${SIMPLE[l.id] ? `<div class="simple"><b>In plain words</b><span>${esc(SIMPLE[l.id])}</span></div>` : ''}
+        ${SIMPLE[l.id] ? `<div class="simple"><b>In plain words</b><span>${esc(SIMPLE[l.id])}</span>${Voice.supported ? `<button class="listen" type="button" data-listen="${l.id}" aria-label="Listen to this layer explained"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a4.5 4.5 0 0 1 0 7M18.5 6a8 8 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg><span>Listen</span></button>` : ''}</div>` : ''}
         <div class="stackpos" aria-hidden="true">${seg}</div>
       </div>
       <div class="layer-body">
@@ -3087,7 +3165,19 @@ const SIMPLE = {
   if (document.readyState === 'complete') highlightAll(); else window.addEventListener('load', highlightAll);
 
   /* ---------- tabs + copy ---------- */
+  let listening = null;
+  const strip = h => h.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  const resetListen = () => { $$('.listen.on').forEach(b => { b.classList.remove('on'); $('span', b).textContent = 'Listen'; }); listening = null; };
   layersEl.addEventListener('click', e => {
+    const lb = e.target.closest('[data-listen]');
+    if (lb) {
+      const id = lb.dataset.listen;
+      if (listening === id) { Voice.stop(); resetListen(); return; }
+      resetListen(); listening = id; lb.classList.add('on'); $('span', lb).textContent = 'Stop';
+      const l = byId[id];
+      Voice.speak(`${l.title}. In plain words: ${SIMPLE[id]} Why it is needed: ${strip(l.why)} What it does: ${l.does.map(strip).join('. ')}`, resetListen);
+      return;
+    }
     const tab = e.target.closest('[role="tab"]');
     if (tab) {
       const list = tab.parentElement;
@@ -3635,7 +3725,7 @@ const SIMPLE = {
   /* ---------- engine ---------- */
   const pk = document.getElementById('pk');
   const el = id => document.getElementById(id);
-  let cam = 230, camT = 230, vw = 820, pos = P.screen.slice(), raf = null, timers = [], cur = 0, playing = false, attack = false, moving = null;
+  let goId = 0, cam = 230, camT = 230, vw = 820, pos = P.screen.slice(), raf = null, timers = [], cur = 0, playing = false, attack = false, moving = null;
   const steps = () => attack ? [...STEPS.slice(0, 9).map((s, i) => i === 8 ? Object.assign({}, s, s.attack, { attackMode: true }) : s), BLOCKED] : STEPS;
 
   function sizeView() {
@@ -3696,9 +3786,16 @@ const SIMPLE = {
     for (let k = 0; k < n; k++) settle(list[k]);
     // transient flags that should not persist into later steps
     ['st-wire', 'st-towersig', 'st-net', 'st-scan', 'st-gwstamp'].forEach(c => svg.classList.remove(c));
-    const s = list[n]; cur = n;
+    const s = list[n]; cur = n; const myGo = ++goId;
     renderCaption(list, n);
-    if (!animate) { settle(s); camT = s.cam || pos[0]; cam = camT; apply(); return; }
+    if (!animate) { Voice.stop(); settle(s); camT = s.cam || pos[0]; cam = camT; apply(); return; }
+    let animDone = false, voiceDone = !Voice.on;
+    const advance = () => {
+      if (myGo !== goId || !playing || !animDone || !voiceDone) return;
+      if (s.final) { setPlaying(false); return; }
+      later(Voice.on ? 700 : 0, () => go(cur + 1));
+    };
+    if (Voice.on) Voice.speak(`${s.t}. ${s.s} Engineers call this ${s.tech}.`, () => { if (myGo !== goId) return; voiceDone = true; advance(); });
     (s.pre || []).forEach(add);
     if (n === 0) { pos = P.screen.slice(); }
     const after = () => {
@@ -3706,11 +3803,8 @@ const SIMPLE = {
       (s.seq || []).forEach(([d, c]) => { maxD = Math.max(maxD, d); later(d, () => add(c)); });
       if (s.cam) camT = s.cam; kick();
       later(maxD + 400, () => { ['st-wire', 'st-towersig', 'st-net'].forEach(c => svg.classList.remove(c)); });
-      if (playing) {
-        if (s.final) { later(maxD + 600, () => setPlaying(false)); return; }
-        const read = Math.max(3800, s.s.length * 42) + (s.wait || 0);
-        later(read, () => go(cur + 1));
-      }
+      const read = Voice.on ? maxD + 400 : Math.max(3800, s.s.length * 42) + (s.wait || 0);
+      later(read, () => { animDone = true; advance(); });
     };
     if (s.ret) {
       const back = routeTo(list, n - 1).reverse();
@@ -3740,16 +3834,34 @@ const SIMPLE = {
     stage.classList.toggle('playing', p);
   }
   el('storyPlay').addEventListener('click', () => {
-    if (playing) { setPlaying(false); timers.forEach(clearTimeout); timers = []; return; }
+    if (playing) { setPlaying(false); timers.forEach(clearTimeout); timers = []; goId++; Voice.stop(); return; }
     setPlaying(true); el('storyStart').hidden = true;
-    go(cur >= steps().length - 1 ? 0 : (cur === 0 ? 0 : cur + 1));
+    go(cur >= steps().length - 1 ? 0 : cur);
   });
   el('storyStart').addEventListener('click', () => { el('storyStart').hidden = true; setPlaying(true); go(0); });
   el('storyNext').addEventListener('click', () => { el('storyStart').hidden = true; setPlaying(false); go(cur + 1); });
   el('storyPrev').addEventListener('click', () => { setPlaying(false); go(cur - 1); });
   cap.dots.addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (!b) return; el('storyStart').hidden = true; setPlaying(false); go(+b.dataset.i); });
-  el('storyMode').addEventListener('change', e => { attack = e.target.checked; setPlaying(false); go(0, false); el('storyStart').hidden = false; el('storyStart').querySelector('b').textContent = attack ? 'Send a suspicious letter' : 'Start the story'; });
+  el('storyMode').addEventListener('change', e => { attack = e.target.checked; setPlaying(false); Voice.stop(); go(0, false); el('storyStart').hidden = false; el('storyStart').querySelector('b').textContent = attack ? 'Send a suspicious letter' : 'Start the story'; });
   stage.addEventListener('keydown', e => { if (e.key === 'ArrowRight') el('storyNext').click(); if (e.key === 'ArrowLeft') el('storyPrev').click(); });
+
+
+  /* ---------- narration controls ---------- */
+  const vBtn = el('voiceBtn'), vRate = el('voiceRate'), vPick = el('voicePick');
+  if (!Voice.supported) { el('voiceRow').innerHTML = '<span class="muted">Narration is not supported in this browser.</span>'; }
+  else {
+    const paint = () => { const on = Voice.on; vBtn.setAttribute('aria-pressed', on); vBtn.querySelector('b').textContent = on ? 'Voice on' : 'Voice off'; vBtn.classList.toggle('off', !on); };
+    paint();
+    vBtn.addEventListener('click', () => { Voice.setOn(!Voice.on); paint(); if (Voice.on) { const s = steps()[cur]; Voice.speak(`${s.t}. ${s.s}`); } });
+    vRate.value = String(Voice.rate);
+    vRate.addEventListener('change', () => Voice.setRate(parseFloat(vRate.value)));
+    Voice.onVoices(list => {
+      vPick.innerHTML = list.map(v => `<option value="${v.name.replace(/"/g, '&quot;')}">${v.name.replace(/</g, '&lt;')} (${v.lang})</option>`).join('');
+      vPick.value = Voice.voiceName; vPick.hidden = list.length < 2;
+    });
+    vPick.addEventListener('change', () => { Voice.setVoice(vPick.value); const s = steps()[cur]; Voice.speak(s.t); });
+  }
+  addEventListener('pagehide', () => Voice.stop());
 
   addEventListener('resize', sizeView);
   sizeView(); go(0, false);
